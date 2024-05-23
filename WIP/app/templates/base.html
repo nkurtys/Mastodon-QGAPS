@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+    <head>
+      {% if title %}
+      <title>{{ title }} - MastodonTools</title>
+      {% else %}
+      <title>Welcome to MastodonTools</title>
+      {% endif %}
+    </head>
+    <body>
+        <div>Navigation: <a href="/index">Home</a> 
+            <a href="/search">Search Database</a></div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>
