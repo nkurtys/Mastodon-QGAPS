@@ -1,5 +1,6 @@
 from flask import render_template
 import sqlite3
+from MastodonScrape import makeApp, searchPeriod
 from app import app
 
 @app.route('/')
@@ -15,10 +16,22 @@ def database():
     cursor = connection.cursor()
     posts = cursor.execute('SELECT * FROM example').fetchall()
     cursor.close()
+
+    #Detect Qfever in Content for highlighting
+
     return render_template('database.html', title='Database Lookup', posts=posts)
 @app.route('/search')
 def search():
-    return render_template('search.html', title='Search-Tool')
+    ## imprt funtion from main.py
+    # try: 
+    #     statuses = searchPeriod("mastodon.social", )
+        return render_template('search.html', title='Search-Tool'
+                               #, statuses=statuses
+                               )
+
+    #except:
+        
+
 @app.route('/admin')
 def admin():
     user = {'username': 'Natalie'}

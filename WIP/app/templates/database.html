@@ -3,44 +3,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <!-- Link to your CSS file --> 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"> 
+     
+     
 
-    <h1>"QFever" Database</h1>
+    <h1>QFever Database</h1>
 
-<table>
-  <tr>
+<table class="table">
+  <thead>
+    <tr>
     <th>Content</th>
-    <th>ID</th>
-    <th>Created_at</th>
-    <th>URI</th>
+    <!-- <th>ID</th> -->
+    <th>Timestamp</th>
+    <!-- <th>URI</th> -->
     <th>URL</th>
     <th>Language</th>
         
-  </tr>
-
-  <!-- <tr>  
-  {% for post in posts%}
-    {% for data in post %}
-      <td>{{ data }}</td>
-    {% endfor %}
-  </tr>
-  {% endfor %} -->
-
-  <tr>  
-    {% for post in posts%}
-      <td>{{ post[5] }}</td>
-      <td>{{ post[0] }}</td>
-      <td>{{ post[1] }}</td>
-      <td><a href = "{{ post[3] }}">{{ post[3] }}</a></td>
-      <td><a href = "{{ post[4] }}">{{ post[4] }}</a></td>
-      <td>{{ post[2] }}</td>
-      
-
-    
     </tr>
-    {% endfor %}
+  </thead>
   
+  <tbody>
+    <tr>  
+      {% for post in posts%}
+        <td>{{ post[5] }}</td>
+        <!-- <td>{{ post[0] }}</td> -->
+        <td>{{ post[1] }}</td>
+        <!-- <td><a href = "{{ post[3] }}">{{ post[3] }}</a></td> -->
+        <td><a href = "{{ post[4] }}">{{ post[4] }}</a></td>
+        <td>{{ post[2] }}</td>
+      </tr>
+      {% endfor %}
+  </tbody>
 </table>
 
 

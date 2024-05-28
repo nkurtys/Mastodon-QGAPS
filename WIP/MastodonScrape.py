@@ -154,7 +154,7 @@ def searchPeriod(instance, query = None, start_date = None, end_date = None, fir
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print("ST: " + start_time + ". Still fetching and waiting fo ratelimit to reset..." + current_time)
-    cursor.execute("SELECT * FROM example ORDER BY created_at")
+    cursor.execute("SELECT * FROM example ORDER BY created_at DESC")
     cursor.execute("SELECT COUNT(*) FROM example")
     count = cursor.fetchone()[0]
     connection.close()
@@ -237,7 +237,7 @@ def activityPERweek(start_date = "2016-02-02", end_date = False):
 
 #makeApp('mastodon.social')
 #activityPERweek(datetime(2021,1,1,00,1), datetime(2021,6,30,23,59))
-searchPeriod("mastodon.social", query= "qfever", start_date="2016-03-15", end_date="2024-05-27", first=True)
+#searchPeriod("mastodon.social", query= "qfever", start_date="2016-03-15", end_date="2024-05-27", first=True)
 
 # connection = sqlite3.connect("test.db")
 # cursor = connection.cursor()

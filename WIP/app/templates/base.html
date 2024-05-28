@@ -1,5 +1,10 @@
 <!doctype html>
 <html>
+    <!-- Link to your Icon kit file -->
+    <script src="https://kit.fontawesome.com/abb46d2f45.js" crossorigin="anonymous"></script>
+    <!-- Link to your CSS file -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    
     <head>
       {% if title %}
       <title>{{ title }} - QGAPS Tools</title>
@@ -7,12 +12,13 @@
       <title>Welcome to QGAPS Tools</title>
       {% endif %}
     </head>
-    
     <body>
-        <nav>Navigation: <a href="/index">Home</a> 
-            <a href="/database">Database</a>
-            <a href="/search">Search</a>
-            <a href="/admin">Admin</a></nav>
+        <nav>
+            <a href="/index"><i class="fa-solid fa-house"></i></a> 
+            <a href="/database"><i class="fa-solid fa-table"></i></a>
+            <a href="/search"><i class="fa-solid fa-magnifying-glass"></i></a>
+            <a href="/admin"><i class="fa-solid fa-user"></i></a>
+        </nav>
         <hr>
         {% block content %}{% endblock %}
     </body>
