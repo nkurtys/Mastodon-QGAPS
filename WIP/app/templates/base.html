@@ -2,14 +2,17 @@
 <html>
     <head>
       {% if title %}
-      <title>{{ title }} - MastodonTools</title>
+      <title>{{ title }} - QGAPS Tools</title>
       {% else %}
-      <title>Welcome to MastodonTools</title>
+      <title>Welcome to QGAPS Tools</title>
       {% endif %}
     </head>
+    
     <body>
-        <div>Navigation: <a href="/index">Home</a> 
-            <a href="/search">Search Database</a></div>
+        <nav>Navigation: <a href="/index">Home</a> 
+            <a href="/database">Database</a>
+            <a href="/search">Search</a>
+            <a href="/admin">Admin</a></nav>
         <hr>
         {% block content %}{% endblock %}
     </body>

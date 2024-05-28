@@ -73,7 +73,7 @@ def searchPeriod(instance, query = None, start_date = None, end_date = None, fir
     cursor = connection.cursor()
     if first == True:
         cursor.execute("DROP TABLE IF EXISTS example")
-    cursor.execute("CREATE TABLE IF NOT EXISTS example (id int NOT NULL UNIQUE, created_at, language, uri, url, content)")
+    cursor.execute("CREATE TABLE IF NOT EXISTS example (id int NOT NULL, created_at, language, uri, url, content)")
     print("Connected to table")
     
 
@@ -91,11 +91,15 @@ def searchPeriod(instance, query = None, start_date = None, end_date = None, fir
         print("Transforming Dates...")
         min_id = ( int( (datetime.fromisoformat(start_date)).timestamp() ) << 16 ) * 1000
         max_id = ( int( (datetime.fromisoformat(end_date)).timestamp() ) << 16 ) * 1000
-        
-        if (cursor.execute("SELECT COUNT(*) FROM example WHERE id > 'min_id' AND id < 'max_id'")) != 0:
-            #return warning that some datapoints are already inserted and to maybe select a time period after the last id
-            return
         print("Dates succesfully transformed.")
+
+        cursor.execute("SELECT COUNT(*) FROM example WHERE id > 'min_id' AND id < 'max_id'")
+        c = cursor.fetchone()[0]
+        if (c != 0):
+            #return warning that some datapoints are already inserted and to maybe select a time period after the last id
+            print ("Warning: Dublicates in databse! " + str(c))
+            print(c)
+        
     else:
         print("Different Date Error...")
         raise AttributeError
@@ -107,8 +111,6 @@ def searchPeriod(instance, query = None, start_date = None, end_date = None, fir
 
 # Fetch statuses fitting the query page by page
     while True:
-
-        #statuses = []  #new test
         # Fetch a page of statuses
         if query ==  None:
             #Fetch a page of statuses
@@ -116,32 +118,31 @@ def searchPeriod(instance, query = None, start_date = None, end_date = None, fir
     
         else:
             results = App.search(query, max_id=max_id, min_id=min_id)
-            statuses = results["statuses"]
+            statuses = results["statuses"] + App.timeline_hashtag(query, limit=limit, max_id=max_id, min_id=min_id)
+            
 
         # Load Statuses into Database
         for status in statuses:
+            
+            html = status['content']
+            soup = BeautifulSoup(html, features="html.parser")
+            status['content'] = soup.get_text()
             try:
                 cursor.execute("INSERT INTO example VALUES (:id, :created_at, :language, :uri, :url, :content)", (status))
                 connection.commit() 
             except sqlite3.IntegrityError as err:
                 continue
-
-        # for hashtag in hashtags:
-        #     try:
-        #         print(hashtag)
-        #     except sqlite3.IntegrityError as err:
-        #         continue
-
-        
+            except DeprecationWarning as deperr:
+                print("dumb warning")
 
         # Check if there are more pages
         if len(statuses) <= 1:
-            print("no more statuses found...saving to database.")
+            print("No more statuses found...saving to database.")
             break  # No more pages
 
         # Set max_id for the next page
-        max_id = statuses[-1]['id']
-        #min_id = statuses[0]['id']
+        #max_id = statuses[-1]['id']
+        min_id = statuses[0]['id']
 
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
@@ -228,16 +229,19 @@ def activityPERweek(start_date = "2016-02-02", end_date = False):
 
 #makeApp('mastodon.social')
 #activityPERweek(datetime(2021,1,1,00,1), datetime(2021,6,30,23,59))
-#searchPeriod("mastodon.social", query= "covid", start_date="2024-05-01", end_date="2024-05-08", first=True)
+#searchPeriod("mastodon.social", query= "qfever", start_date="2016-03-15", end_date="2024-05-03", first=True)
 
-# connection = sqlite3.connect("test.db")
-# cursor = connection.cursor()
-# cursor.execute("SELECT * FROM example")
-# rows = cursor.fetchall()
-# count = 0
+connection = sqlite3.connect("test.db")
+cursor = connection.cursor()
+cursor.execute("SELECT content FROM example")
+rows = cursor.fetchall()
 # for row in rows:
+#     # html = row[0]
+#     # soup = BeautifulSoup(html, features="html.parser")
+#     # print(soup.get_text())
+#     #print(html)
 #     print(row)
-# print(count)
+print(len(rows))
 
 # connection.commit()
 
