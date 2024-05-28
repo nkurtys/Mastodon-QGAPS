@@ -1,9 +1,13 @@
 import mastodon
 from mastodon import Mastodon
+#Mastodon ID - timestamp conversion
 from datetime import datetime, timedelta
+#sqlite import
 import sqlite3
+#html conversion
 from bs4 import BeautifulSoup
-
+#sort list
+from operator import itemgetter
 import os.path
 
 
@@ -73,7 +77,7 @@ def searchPeriod(instance, query = None, start_date = None, end_date = None, fir
     cursor = connection.cursor()
     if first == True:
         cursor.execute("DROP TABLE IF EXISTS example")
-    cursor.execute("CREATE TABLE IF NOT EXISTS example (id int NOT NULL, created_at, language, uri, url, content)")
+    cursor.execute("CREATE TABLE IF NOT EXISTS example (id int NOT NULL UNIQUE, created_at, language, uri, url, content)")
     print("Connected to table")
     
 
@@ -117,16 +121,19 @@ def searchPeriod(instance, query = None, start_date = None, end_date = None, fir
             statuses = App.timeline_public(limit=limit, max_id=max_id, min_id=min_id)
     
         else:
+            #search user timeline and public hashtags for query
             results = App.search(query, max_id=max_id, min_id=min_id)
             statuses = results["statuses"] + App.timeline_hashtag(query, limit=limit, max_id=max_id, min_id=min_id)
-            
+            statuses = sorted(statuses, key=itemgetter("created_at"))
 
         # Load Statuses into Database
         for status in statuses:
-            
+            #turn content from html code to normal text
             html = status['content']
             soup = BeautifulSoup(html, features="html.parser")
             status['content'] = soup.get_text()
+
+            #insert found posts into database
             try:
                 cursor.execute("INSERT INTO example VALUES (:id, :created_at, :language, :uri, :url, :content)", (status))
                 connection.commit() 
@@ -147,6 +154,7 @@ def searchPeriod(instance, query = None, start_date = None, end_date = None, fir
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print("ST: " + start_time + ". Still fetching and waiting fo ratelimit to reset..." + current_time)
+    cursor.execute("SELECT * FROM example ORDER BY created_at")
     cursor.execute("SELECT COUNT(*) FROM example")
     count = cursor.fetchone()[0]
     connection.close()
@@ -229,19 +237,19 @@ def activityPERweek(start_date = "2016-02-02", end_date = False):
 
 #makeApp('mastodon.social')
 #activityPERweek(datetime(2021,1,1,00,1), datetime(2021,6,30,23,59))
-#searchPeriod("mastodon.social", query= "qfever", start_date="2016-03-15", end_date="2024-05-03", first=True)
+searchPeriod("mastodon.social", query= "qfever", start_date="2016-03-15", end_date="2024-05-27", first=True)
 
-connection = sqlite3.connect("test.db")
-cursor = connection.cursor()
-cursor.execute("SELECT content FROM example")
-rows = cursor.fetchall()
-# for row in rows:
-#     # html = row[0]
-#     # soup = BeautifulSoup(html, features="html.parser")
-#     # print(soup.get_text())
-#     #print(html)
-#     print(row)
-print(len(rows))
+# connection = sqlite3.connect("test.db")
+# cursor = connection.cursor()
+# cursor.execute("SELECT content FROM example")
+# rows = cursor.fetchall()
+# # for row in rows:
+# #     # html = row[0]
+# #     # soup = BeautifulSoup(html, features="html.parser")
+# #     # print(soup.get_text())
+# #     #print(html)
+# #     print(row)
+# print(len(rows))
 
 # connection.commit()
 
