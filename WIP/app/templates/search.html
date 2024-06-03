@@ -4,7 +4,53 @@
 
 {% block content %}
 
-    <h1>Search Mastodon</h1>
-    
+<h1>Search Mastodon</h1>
+
+<!-- TODO change that only mastodon.social - dropdown menue open for dding more instnaces -->
+<form action="" method="get" class="searchForm">
+ <label> Mastodon Instance:</label> <input type="text" value="mastodon.social" name="instance">
+  <label for="">Search query:</label> <input type="text" name="query">
+  <label for="">Time from: </label><input type="date" name="start_date">
+  <label for="">to: </label><input type="date" name="end_date">
+  <input type="submit" value="Search">
+
+</form>
+
+<hr>
+
+{%if posts != False%}
+<table class="table">
+  <thead>
+    <tr>
+      <th>Content</th>
+      <!-- <th>ID</th> -->
+      <th>Timestamp</th>
+      <!-- <th>URI</th> -->
+      <th>URL</th>
+      <th>Language</th>
+
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      {% for post in posts%}
+      <td>{{ post["content"] }}</td>
+      <!-- <td>{{ post[0] }}</td> -->
+      <td>{{ post["created_at"] }}</td>
+      <!-- <td><a href = "{{ post[3] }}">{{ post[3] }}</a></td> -->
+      <td><a href="{{ post[4] }}">{{ post["url"] }}</a></td>
+      <td>{{ post["language"] }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{%else%}
+
+{%endif%}
+
+<script>
+  
+</script>
 
 {% endblock %}
