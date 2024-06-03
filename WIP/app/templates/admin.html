@@ -6,4 +6,27 @@
     
     <h1>Welcome to the Admin Area, {{ user.username }}!</h1>
     
+
+    <form action="/admin" method="get" class="searchForm">
+        <input class="buttons" type="submit" name= "redo" value="Redo Database">
+        <br>
+        <input class="buttons" type="button" value="Update Database">
+        <label class="result"> </label>
+       
+    </form>
+    <script> 
+        const button = document.querySelector("input");
+        const paragraph = document.querySelector("label");
+        
+        button.addEventListener("click", updateButton);
+        
+        function updateButton() {
+          if (button.value === "Redo Database") {
+            button.value = "Loading... Don't cancel.";
+          } else {
+            button.value = "Redo Database";
+          }
+
+        }
+        </script>
 {% endblock %}

@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import render_template, request
 import sqlite3
 from app import app, functions
@@ -42,6 +43,22 @@ def search():
 
 @app.route('/admin')
 def admin():
-    #setup database
+
+    now = datetime.now()
+    redo = request.args.get("redo", "")
+    update = request.args.get("update", "")
+
+
+    if redo == "Loading... Don't cancel.":
+        #setup database
+        result = functions.workDatabase(instance="mastodon.social", query = "qfever", start_date = "2016-03-16", end_date = str(now), first = True)  
+    elif update == "Updating":
+        #Access Database for last entry date
+        connection = sqlite3.connect("test.db")
+        cursor = connection.cursor()
+        last_date = cursor.execute('SELECT created_at FROM example').fetchone()
+        cursor.close()
+        #update Database
+        result = functions.workDatabase(instance="mastodon.social", query = "qfever", start_date = last_date, end_date = str(now), first = False)
     user = {'username': 'Natalie'}
     return render_template('admin.html', title='Admin', user=user)
