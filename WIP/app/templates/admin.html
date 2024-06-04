@@ -8,25 +8,35 @@
     
 
     <form action="/admin" method="get" class="searchForm">
-        <input class="buttons" type="submit" name= "redo" value="Redo Database">
+        <input id="redo" class="buttons" type="submit" name="redo" value="Redo Database">
         <br>
-        <input class="buttons" type="button" value="Update Database">
+        <input id="update" class="buttons" type="submit" name="update" value="Update Database">
         <label class="result"> </label>
        
     </form>
     <script> 
-        const button = document.querySelector("input");
-        const paragraph = document.querySelector("label");
+        const button_redo = document.getElementById("redo");
+        const button_update = document.getElementById("update");
         
-        button.addEventListener("click", updateButton);
+        button_redo.addEventListener("click", function() {
+          if (button_redo.value === "Redo Database") {
+            button_redo.value = "Loading... Don't cancel.";
+          } else {
+            button_redo.value = "Redo Database";
+          }
+        });
+
+        button_update.addEventListener("click", function(){
+          if (button_update.value === "Update Database") {
+            button_update.value = "Updating... Don't cancel.";
+          } else {
+            button_update.value = "Update Database";
+          }
+        });
         
         function updateButton() {
-          if (button.value === "Redo Database") {
-            button.value = "Loading... Don't cancel.";
-          } else {
-            button.value = "Redo Database";
-          }
-
+          
         }
+
         </script>
 {% endblock %}

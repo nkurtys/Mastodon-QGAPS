@@ -51,14 +51,16 @@ def admin():
 
     if redo == "Loading... Don't cancel.":
         #setup database
-        result = functions.workDatabase(instance="mastodon.social", query = "qfever", start_date = "2016-03-16", end_date = str(now), first = True)  
-    elif update == "Updating":
+        result = functions.workDatabase(instance="mastodon.social", query = "qfever", start_date = "2020-03-16", end_date = str(now), first = True)  
+    elif update == "Updating... Don't cancel.":
         #Access Database for last entry date
         connection = sqlite3.connect("test.db")
         cursor = connection.cursor()
         last_date = cursor.execute('SELECT created_at FROM example').fetchone()
         cursor.close()
+        print(last_date)
+
         #update Database
-        result = functions.workDatabase(instance="mastodon.social", query = "qfever", start_date = last_date, end_date = str(now), first = False)
+        result = functions.workDatabase(instance="mastodon.social", query = "qfever", start_date = last_date[0], end_date = str(now), first = False)
     user = {'username': 'Natalie'}
     return render_template('admin.html', title='Admin', user=user)

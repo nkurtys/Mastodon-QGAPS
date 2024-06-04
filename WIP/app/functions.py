@@ -171,9 +171,13 @@ def workDatabase(instance, query = None, start_date = None, end_date = None, fir
     
         else:
             #search user timeline and public hashtags for query
-            results = App.search(query, max_id=max_id, min_id=min_id)
-            statuses = results["statuses"] + App.timeline_hashtag(query, limit=limit, max_id=max_id, min_id=min_id)
-            statuses = sorted(statuses, key=itemgetter("created_at"))
+            results_query = App.search(query, max_id=max_id, min_id=min_id)
+            results_more = App.search("Coxiella", max_id=max_id, min_id=min_id)
+            statuses = results_query["statuses"] + results_more["statuses"] + App.timeline_hashtag(query, limit=limit, max_id=max_id, min_id=min_id)
+            # if more==True:
+            #     statuses = App.search(max_id=max_id, min_id=min_id)
+            statuses = sorted(statuses, key=itemgetter("id"), reverse=True)
+            print(len(statuses))
 
         # Load Statuses into Database
         for status in statuses:
@@ -203,9 +207,10 @@ def workDatabase(instance, query = None, start_date = None, end_date = None, fir
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print("ST: " + start_time + ". Still fetching and waiting fo ratelimit to reset..." + current_time)
-    cursor.execute("SELECT * FROM example ORDER BY created_at DESC")
+    cursor.execute("SELECT * FROM example ORDER BY created_at")
     cursor.execute("SELECT COUNT(*) FROM example")
     count = cursor.fetchone()[0]
+    connection.commit()
     connection.close()
     print("Finished loading into the Database.")
     return [count,count_old]
