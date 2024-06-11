@@ -13,13 +13,12 @@
   <label for="">Time from: </label><input type="date" name="start_date">
   <label for="">to: </label><input type="date" name="end_date">
   <input class="buttons" type="submit" value="Search">
-
 </form>
 
 <hr>
 
 {%if posts != False%}
-<table class="table">
+<table id="basetable" class="display">
   <thead>
     <tr>
       <th>Content</th>
@@ -35,22 +34,37 @@
   <tbody>
     <tr>
       {% for post in posts%}
-      <td>{{ post["content"] }}</td>
+      <td class="contentcell">{{ post["content"] }}</td>
       <!-- <td>{{ post[0] }}</td> -->
       <td>{{ post["created_at"] }}</td>
       <!-- <td><a href = "{{ post[3] }}">{{ post[3] }}</a></td> -->
-      <td><a href="{{ post[4] }}">{{ post["url"] }}</a></td>
+      <td><a href="{{ post['uri'] }}">{{ post["uri"] }}</a></td>
       <td>{{ post["language"] }}</td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
+
 {%else%}
 
 {%endif%}
+<!-- Link to datatables css files -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.5.2/css/dataTables.dateTime.min.css">
+    
+<!-- Link to datatables.net files -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/datetime/1.5.2/js/dataTables.dateTime.min.js"></script>
 
 <script>
-  
+  new DataTable('#basetable', {
+  });
+
+
 </script>
+
 
 {% endblock %}

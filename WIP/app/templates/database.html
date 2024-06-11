@@ -6,7 +6,7 @@
      
     <h1>QFever Database</h1>
 
-<table class="table">
+<table id="basetable" class="display">
   <thead>
     <tr>
     <th>Content</th>
@@ -33,7 +33,21 @@
   </tbody>
 </table>
 
+<!-- Link to datatables css files -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.5.2/css/dataTables.dateTime.min.css">
+    
+<!-- Link to datatables.net files -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/datetime/1.5.2/js/dataTables.dateTime.min.js"></script>
 
+<script>
+  new DataTable('#basetable', {
+  });
+</script>
 
     
 {% endblock %}
