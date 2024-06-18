@@ -117,7 +117,77 @@ def test():
     print("Hello World")
     return "Hello World"
 
-def workDatabase(instance, query = None, start_date = None, end_date = None, first = False):
+def saveDatabase(table=None, query=None):
+#Log into App
+    App = makeApp("mastodon.social")
+
+    #Access Database
+    connection = sqlite3.connect("test.db")
+    cursor = connection.cursor()
+    #cursor.execute("DROP TABLE IF EXISTS " + table)
+    cursor.execute("CREATE TABLE IF NOT EXISTS " + table + " (id int NOT NULL UNIQUE, created_at, language, uri, url, content)")
+    print("Connected to table") 
+
+    # Define initial parameters
+    limit = 40
+    min_id = None
+    max_id = None
+    now = datetime.now()
+    print("Transforming Dates...")
+    min_id = ( int( (now).timestamp() ) << 16 ) * 1000
+    #max_id = ( int( (datetime.fromisoformat(end_date)).timestamp() ) << 16 ) * 1000
+    print("Dates succesfully transformed.")
+
+    # cursor.execute("SELECT COUNT(*) FROM " + table + " WHERE id > min_id AND id < max_id")
+    # c = cursor.fetchone()[0]
+    # if (c != 0):
+    #     #return warning that some datapoints are already inserted and to maybe select a time period after the last id
+    #     print ("Warning: Dublicates in databse! " + str(c))
+    #     print(c)
+
+    start_time = now.strftime("%H:%M:%S")
+    current_time = now.strftime("%H:%M:%S")
+    print("Started fetching and waiting for ratelimit to reset...", start_time)
+
+
+    # Fetch a page of statuses
+    if query ==  None:
+        return "No query submitted"
+        #Fetch a page of statuses
+    else:
+        #search user timeline and public hashtags for query
+        results_query = App.search(query, max_id=max_id, min_id=min_id)
+        statuses = results_query["statuses"] + App.timeline_hashtag(query, limit=limit, max_id=max_id, min_id=min_id)
+        #statuses = sorted(statuses, key=itemgetter("id"), reverse=True)
+        print(len(statuses))
+
+    # Load Statuses into Database
+    for status in statuses:
+        #turn content from html code to normal text
+        html = status['content']
+        soup = BeautifulSoup(html, features="html.parser")
+        status['content'] = soup.get_text()
+
+        #insert found posts into database
+        try:
+            cursor.execute("INSERT INTO" + table + " VALUES (:id, :created_at, :language, :uri, :url, :content)", (status))
+            connection.commit() 
+        except sqlite3.IntegrityError as err:
+            continue
+        except DeprecationWarning as deperr:
+            print("dumb warning")
+
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        print("ST: " + start_time + ". Still fetching and waiting fo ratelimit to reset..." + current_time)
+    #cursor.execute("SELECT * FROM " + table + " ORDER BY created_at")
+    connection.commit()
+    connection.close()
+    print("Finished loading into the Database.") 
+    return False
+       
+
+def workDatabase(instance, table = "example", query = None, start_date = None, end_date = None, first = False):
     #Log into App
     App = makeApp(instance)
 
@@ -125,14 +195,11 @@ def workDatabase(instance, query = None, start_date = None, end_date = None, fir
     connection = sqlite3.connect("test.db")
     cursor = connection.cursor()
     if first == True:
-        cursor.execute("DROP TABLE IF EXISTS example")
-    cursor.execute("CREATE TABLE IF NOT EXISTS example (id int NOT NULL UNIQUE, created_at, language, uri, url, content)")
+        cursor.execute("DROP TABLE IF EXISTS " + table)
+    cursor.execute("CREATE TABLE IF NOT EXISTS " + table + " (id int NOT NULL UNIQUE, created_at, language, uri, url, content)")
     print("Connected to table")
     
-
     # Define initial parameters
-    cursor.execute("SELECT COUNT(*) FROM example")
-    count_old = cursor.fetchone()[0]
     limit = 40
     min_id = None
     max_id = None
@@ -146,7 +213,7 @@ def workDatabase(instance, query = None, start_date = None, end_date = None, fir
         max_id = ( int( (datetime.fromisoformat(end_date)).timestamp() ) << 16 ) * 1000
         print("Dates succesfully transformed.")
 
-        cursor.execute("SELECT COUNT(*) FROM example WHERE id > 'min_id' AND id < 'max_id'")
+        cursor.execute("SELECT COUNT(*) FROM " + table + " WHERE id > " + min_id + " AND id < " + max_id)
         c = cursor.fetchone()[0]
         if (c != 0):
             #return warning that some datapoints are already inserted and to maybe select a time period after the last id
@@ -188,7 +255,7 @@ def workDatabase(instance, query = None, start_date = None, end_date = None, fir
 
             #insert found posts into database
             try:
-                cursor.execute("INSERT INTO example VALUES (:id, :created_at, :language, :uri, :url, :content)", (status))
+                cursor.execute("INSERT INTO" + table + " VALUES (:id, :created_at, :language, :uri, :url, :content)", (status))
                 connection.commit() 
             except sqlite3.IntegrityError as err:
                 continue
@@ -207,10 +274,9 @@ def workDatabase(instance, query = None, start_date = None, end_date = None, fir
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print("ST: " + start_time + ". Still fetching and waiting fo ratelimit to reset..." + current_time)
-    cursor.execute("SELECT * FROM example ORDER BY created_at")
-    cursor.execute("SELECT COUNT(*) FROM example")
+    cursor.execute("SELECT * FROM " + table + " ORDER BY created_at")
+    cursor.execute("SELECT COUNT(*) FROM " + table)
     count = cursor.fetchone()[0]
     connection.commit()
     connection.close()
     print("Finished loading into the Database.")
-    return [count,count_old]

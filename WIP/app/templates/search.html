@@ -17,6 +17,27 @@
 
 <hr>
 
+<!-- Add Save button -->
+<form action="" method="get" class="saveForm">
+  <input type="text" name="tablename">
+  <input id="save" class="buttons" type="submit" value="Save Keyword to Dashbord">
+ </form>
+
+
+<script> 
+const button_save = document.getElementById("save");
+
+button_save.addEventListener("click", function() {
+  if (button_redo.value === "Save Keyword to Dashbord") {
+    button_redo.value = "Saving... Don't cancel.";
+  } else {
+    button_redo.value = "Save Keyword to Dashbord";
+  }
+});
+
+</script>
+
+<!-- Add Post Table -->
 {%if posts != False%}
 <table id="basetable" class="display">
   <thead>
@@ -44,6 +65,9 @@
     {% endfor %}
   </tbody>
 </table>
+
+
+
 
 {%else%}
 
