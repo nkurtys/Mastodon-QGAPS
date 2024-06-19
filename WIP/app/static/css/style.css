@@ -147,9 +147,7 @@ input[name="instance"] {
 }
 
 .grid-container {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-content: space-between;
-  font-size: small;
+  display: contents;
+  grid-template-columns: auto;
 }
 

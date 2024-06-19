@@ -19,12 +19,8 @@ def index():
         listOfLists.append(tablename[0])
         listOfLists.append(cursor.execute("SELECT * FROM " + tablename[0]).fetchall())
         listOfTables.append(listOfLists)
-    
-    
-    print(listOfTables)
-    
-    
     cursor.close()
+    
     return render_template('index.html', title='Home', tablenames=names, 
                             listOfTables=listOfTables)
 

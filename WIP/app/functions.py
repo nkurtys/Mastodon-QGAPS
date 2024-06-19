@@ -134,7 +134,8 @@ def saveDatabase(table=None, query=None):
     max_id = None
     now = datetime.now()
     print("Transforming Dates...")
-    min_id = ( int( (now).timestamp() ) << 16 ) * 1000
+    #min_id = ( int( (datetime.fromisoformat(start_date)).timestamp() ) << 16 ) * 1000
+    max_id = ( int( (now).timestamp() ) << 16 ) * 1000
     #max_id = ( int( (datetime.fromisoformat(end_date)).timestamp() ) << 16 ) * 1000
     print("Dates succesfully transformed.")
 
@@ -156,8 +157,8 @@ def saveDatabase(table=None, query=None):
         #Fetch a page of statuses
     else:
         #search user timeline and public hashtags for query
-        results_query = App.search(query, max_id=max_id, min_id=min_id)
-        statuses = results_query["statuses"] + App.timeline_hashtag(query, limit=limit, max_id=max_id, min_id=min_id)
+        results_query = App.search(query, max_id=max_id)
+        statuses = results_query["statuses"] + App.timeline_hashtag(query, limit=limit, max_id=max_id)
         #statuses = sorted(statuses, key=itemgetter("id"), reverse=True)
         print(len(statuses))
 
@@ -170,7 +171,7 @@ def saveDatabase(table=None, query=None):
 
         #insert found posts into database
         try:
-            cursor.execute("INSERT INTO" + table + " VALUES (:id, :created_at, :language, :uri, :url, :content)", (status))
+            cursor.execute("INSERT INTO " + table + " VALUES (:id, :created_at, :language, :uri, :url, :content)", (status))
             connection.commit() 
         except sqlite3.IntegrityError as err:
             continue
@@ -212,13 +213,6 @@ def workDatabase(instance, table = "example", query = None, start_date = None, e
         min_id = ( int( (datetime.fromisoformat(start_date)).timestamp() ) << 16 ) * 1000
         max_id = ( int( (datetime.fromisoformat(end_date)).timestamp() ) << 16 ) * 1000
         print("Dates succesfully transformed.")
-
-        cursor.execute("SELECT COUNT(*) FROM " + table + " WHERE id > " + min_id + " AND id < " + max_id)
-        c = cursor.fetchone()[0]
-        if (c != 0):
-            #return warning that some datapoints are already inserted and to maybe select a time period after the last id
-            print ("Warning: Dublicates in databse! " + str(c))
-            print(c)
         
     else:
         print("Different Date Error...")
