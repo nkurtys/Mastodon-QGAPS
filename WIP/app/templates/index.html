@@ -4,6 +4,7 @@
 
 {% block content %}
 
+
 <h1>Welcome to Q-GAPS Tools</h1>
 <br>
 <br>
@@ -12,37 +13,116 @@
 <br>
 {% if tablenames != False%}
 
-<div class="grid-container">
+<!-- Tab links -->
+<div class="tab">
+
     {%for tablename in listOfTables %}
-    <div id="{{tablename[0]}}-grid" class="grid-item">
-        <h1>'{{tablename[0]}}' Updates </h1>
-        <hr>
-        <table id="{{tablename[0]}}" class="display">
-            <thead>
-                <tr>
-                    <th>Content</th>
-                    <!-- <th>ID</th> -->
-                    <th>Timestamp</th>
-                    <!-- <th>URI</th> -->
-                    <th>URL</th>
-                    <th>Language</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    {% for post in tablename[1] %}
-                    <td>{{ post[5] }}</td>
-                    <td>{{ post[1] }}</td>
-                    <td><a href="{{ post[4] }}">{{ post[4] }}</a></td>
-                    <td>{{ post[2] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <br>
-    </div>
+    <button class="tablinks" data-target="{{tablename[0]}}-tab">{{tablename[0]}}</button>
     {% endfor %}
 </div>
+<!-- Tab content -->
+{%for tablename in listOfTables %}
+<div id="{{tablename[0]}}-tab" class="tabcontent">
+    <h1>'{{tablename[0]}}' Updates </h1>
+    <hr>
+    <table id="{{tablename[0]}}" class="display">
+        <thead>
+            <tr>
+                <th>Content</th>
+                <!-- <th>ID</th> -->
+                <th>Timestamp</th>
+                <!-- <th>URI</th> -->
+                <th>URL</th>
+                <th>Language</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for post in tablename[1] %}
+                <td>{{ post[5] }}</td>
+                <td>{{ post[1] }}</td>
+                <td><a href="{{ post[4] }}">{{ post[4] }}</a></td>
+                <td>{{ post[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</div>
+{% endfor %}
+
+
+
+<style>
+    /* Style the tab */
+    .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+    }
+
+    /* Style the buttons that are used to open the tab content */
+    .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+    }
+
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+        background-color: #ddd;
+    }
+
+    /* Create an active/current tablink class */
+    .tab button.active {
+        background-color: #ccc;
+    }
+
+    /* Style the tab content */
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+    }
+</style>
+<script>
+    var i, tabcontent, tablinks;
+
+
+    tablinks = document.getElementsByClassName("tablinks");
+    
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    
+    
+    
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].addEventListener("click", function () {
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            for (j = 0; j < tablinks.length; j++) {
+                tablinks[j].className = tablinks[j].className.replace(" active", "");
+            }
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            
+            this.className += " active";
+            document.getElementById(this.getAttribute('data-target')).style.display = "block";
+        })
+    }
+
+    
+    
+
+</script>
 
 {% endif %}
 <!-- Link to datatables css files -->
@@ -70,9 +150,9 @@
 <!-- Initializing DataTable table -->
 {%for tablename in tablenames %}
 <script>
-    new DataTable('#{{tablename[0]}}', {
-        mark: true
-    });
+        new DataTable('#{{tablename[0]}}', {
+            mark: true
+        });
 </script>
 {% endfor %}
 {% endblock %}

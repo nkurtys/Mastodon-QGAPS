@@ -22,7 +22,7 @@ def index():
     cursor.close()
     
     return render_template('index.html', title='Home', tablenames=names, 
-                            listOfTables=listOfTables)
+                            listOfTables=listOfTables, user=user)
 
 @app.route('/database')
 def database():
