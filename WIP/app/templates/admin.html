@@ -3,7 +3,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-    
+<script>
+  var i, pagelinks, thispage;
+  pagelinks = document.getElementsByClassName("nav-item");
+  thispage = document.getElementById("admin")
+  for (i = 0; i < pagelinks.length; i++) {
+      pagelinks[i].className = pagelinks[i].className.replace(" active", "");
+  };
+  thispage.className += " active";
+
+</script>
+
     <h1>Welcome to the Admin Area, {{ user.username }}!</h1>
     
 

@@ -4,6 +4,17 @@
 
 {% block content %}
 
+<script>
+  var i, pagelinks, thispage;
+  pagelinks = document.getElementsByClassName("nav-item");
+  thispage = document.getElementById("search")
+  for (i = 0; i < pagelinks.length; i++) {
+      pagelinks[i].className = pagelinks[i].className.replace(" active", "");
+  };
+  thispage.className += " active";
+
+</script>
+
 <h1>Search Mastodon</h1>
 
 <!-- TODO change that only mastodon.social - dropdown menue open for dding more instnaces -->

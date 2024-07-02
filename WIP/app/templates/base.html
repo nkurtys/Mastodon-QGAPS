@@ -4,7 +4,6 @@
     <script src="https://kit.fontawesome.com/abb46d2f45.js" crossorigin="anonymous"></script>
     <!-- Link to your CSS file -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
-
     <!-- Link jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <head>
@@ -15,11 +14,11 @@
       {% endif %}
     </head>
     <body>
-        <nav>
-            <a href="/index"><i class="fa-solid fa-house"></i></a> 
-            <a href="/database"><i class="fa-solid fa-table"></i></a>
-            <a href="/search"><i class="fa-solid fa-magnifying-glass"></i></a>
-            <a href="/admin"><i class="fa-solid fa-user"></i></a>
+        <nav class="navbar">
+            <a id="index" href="/index" class="nav-item"><i class="fa-solid fa-house"></i> Home</a> 
+            <a id="database" href="/database" class="nav-item"><i class="fa-solid fa-table"></i> Database</a>
+            <a id="search" href="/search" class="nav-item"><i class="fa-solid fa-magnifying-glass"></i>Search</a>
+            <a id="admin" href="/admin" class="nav-item split"><i class="fa-solid fa-user"></i> Login</a>
         </nav>
         <hr>
         {% block content %}{% endblock %}

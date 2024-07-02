@@ -1,7 +1,9 @@
 from datetime import datetime
 from flask import render_template, request
 import sqlite3
-from app import app, functions
+from app.scripts import functions
+from app import app
+
 
 @app.route('/')
     
