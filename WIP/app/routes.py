@@ -4,17 +4,22 @@ import sqlite3
 from app.scripts import functions
 from app import app
 
+@app.route("/")
 
-@app.route('/')
-    
-@app.route('/index')
+@app.route('/home')
 def index():
     user = {'username': 'Natalie'}
     #Access Database of fav tables
     connection = sqlite3.connect("test.db")
     cursor = connection.cursor()
-    names = cursor.execute("SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name").fetchall()
 
+    #Delete Datatable
+    delete = request.args.get("button-id", "")
+    if delete:
+        functions.deleteTable(delete)
+
+
+    names = cursor.execute("SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name").fetchall()
     listOfTables = []
     for tablename in names:
         listOfLists = []
@@ -22,7 +27,6 @@ def index():
         listOfLists.append(cursor.execute("SELECT * FROM " + tablename[0]).fetchall())
         listOfTables.append(listOfLists)
     cursor.close()
-    
     return render_template('index.html', title='Home', tablenames=names, 
                             listOfTables=listOfTables, user=user)
 
@@ -36,7 +40,7 @@ def database():
     posts = cursor.execute('SELECT * FROM example').fetchall()
     cursor.close()
 
-    return render_template('database.html', title='Database Lookup', posts=posts)
+    return render_template('database.html', title='Database', posts=posts)
 
 @app.route('/search')
 def search():
@@ -57,7 +61,7 @@ def search():
         result = False
         print("No query")
 
-    return render_template('search.html', title='Search Tool', posts=result, query=query)
+    return render_template('search.html', title='Search', posts=result, query=query)
         
 
 @app.route('/admin')
@@ -70,14 +74,15 @@ def admin():
 
     if redo == "Loading... Don't cancel.":
         #setup database
-        result = functions.workDatabase(instance="mastodon.social", query = "qfever", start_date = "2020-03-16", end_date = str(now), first = True)  
+        print("Redoing")
+        functions.workDatabase(instance="mastodon.social", query = "qfever", start_date = "2020-03-16", end_date = str(now), first = True)  
     elif update == "Updating... Don't cancel.":
         #Access Database for last entry date
         connection = sqlite3.connect("test.db")
         cursor = connection.cursor()
         last_date = cursor.execute('SELECT created_at FROM example').fetchone()
         cursor.close()
-        print(last_date)
+        print("Updating")
 
         #update Database
         functions.workDatabase(instance="mastodon.social", query = "qfever", start_date = last_date[0], end_date = str(now), first = False)

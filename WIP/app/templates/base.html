@@ -2,6 +2,7 @@
 <html>
     <!-- Link to your Icon kit file -->
     <script src="https://kit.fontawesome.com/abb46d2f45.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Link to your CSS file -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <!-- Link jQuery -->
@@ -15,10 +16,11 @@
     </head>
     <body>
         <nav class="navbar">
-            <a id="index" href="/index" class="nav-item"><i class="fa-solid fa-house"></i> Home</a> 
+            <a id="home" href="/home" class="nav-item"><i class="fa-solid fa-house"></i> Home</a> 
             <a id="database" href="/database" class="nav-item"><i class="fa-solid fa-table"></i> Database</a>
             <a id="search" href="/search" class="nav-item"><i class="fa-solid fa-magnifying-glass"></i>Search</a>
-            <a id="admin" href="/admin" class="nav-item split"><i class="fa-solid fa-user"></i> Login</a>
+            <h1 id="title" class="nav-item">Welcome to Q-GAPS Tools</h1>
+            <a id="admin" href="/admin" class="nav-item split"><i class="fa-solid fa-user"></i> Admin</a>
         </nav>
         <hr>
         {% block content %}{% endblock %}

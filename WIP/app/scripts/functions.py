@@ -187,6 +187,15 @@ def saveDatabase(table=None, query=None):
     print("Finished loading into the Database.") 
     return False
        
+def deleteTable(name_this_delete):
+    tablename = name_this_delete.replace("this_delete", "")
+    connection = sqlite3.connect("test.db")
+    cursor = connection.cursor()
+    cursor.execute("DROP TABLE IF EXISTS " + tablename)
+    print("Delted Table")
+    connection.commit()
+    connection.close()
+
 
 def workDatabase(instance, table = "example", query = None, start_date = None, end_date = None, first = False):
     #Log into App

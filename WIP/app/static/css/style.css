@@ -1,10 +1,10 @@
-h1{
+h1 {
   text-align: center;
   color: #336B6B;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-h2{
+h2 {
   text-align: center;
   color: #336B6B;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -15,31 +15,46 @@ h2{
 } */
 nav {
   /*width: 100%;  Full-width */
-  overflow: hidden; /* Overflow due to float */
+  overflow: hidden;
+  /* Overflow due to float */
 }
 
 nav a {
-  float: left;/* Float links side by side */
-  color: white; /* White text color */
-  text-align: center; /* Center-align text */
+  float: left;
+  /* Float links side by side */
+  color: white;
+  /* White text color */
+  text-align: center;
+  /* Center-align text */
   /*width: 25%;  Equal width (5 icons with 20% width each = 100%) */
-  padding: 14px 16px; /* Some top and bottom padding */
-  font-size: 36px; /* Increased font size */
+  padding: 14px 16px;
+  /* Some top and bottom padding */
+  font-size: 36px;
+  /* Increased font size */
   text-decoration: none;
   font-size: 20px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
 }
 
+nav h1 {
+
+  padding: 14px 450px;
+  margin-top: 0px;
+  margin-bottom: -70px;
+}
+
 nav a:hover {
-  background-color: #ddd; /* Add a hover color */
+  background-color: #ddd;
+  /* Add a hover color */
 }
 
 nav a.active {
-  background-color: #336B6B; /* Add an active/current color */
+  background-color: #336B6B;
+  /* Add an active/current color */
   color: white;
 }
 
-nav a.split{
+nav a.split {
   float: right;
 }
 
@@ -89,7 +104,9 @@ label {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-/* table.display.dataTable {} */
+table.display.dataTable {
+  width: 100%;
+}
 
 div.dt-info {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -211,6 +228,34 @@ input[name="instance"] {
   background-color: white;
   background-image: linear-gradient(to top left, rgb(0 0 0 / 20%), rgb(0 0 0 / 20%) 30%, rgb(0 0 0 / 0%));
   text-transform: uppercase;
+}
+
+.button-container {
+
+  position: relative;
+  display: inline-block;
+}
+
+.tab button.delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  margin-right: 1px;
+  background-color: transparent;
+  background-image: none;
+  color: grey;
+  border: none;
+  font-size: 12px;
+  line-height: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.tab button.delete:hover{
+  background-color: transparent;
+  color: red;
 }
 
 /* Change background color of buttons on hover */
