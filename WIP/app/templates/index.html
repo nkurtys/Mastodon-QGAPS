@@ -24,8 +24,8 @@
 <div class="tab">
     {%for tablename in listOfTables %}
     <div class="button-container">
-        <button class="tablinks" data-target="{{tablename[0]}}-tab">{{tablename[0]}}</button>
         <form action="/home" method="get">
+            <button class="tablinks" name="table-id" value="{{tablename[0]}}" data-target="{{tablename[0]}}-tab">{{tablename[0]}}</button>
             <button type="submit" class="delete" name="button-id" value="{{tablename[0]}}"><i class="material-icons">delete</i></button>
         </form>
         
@@ -77,7 +77,9 @@
             }
             // show first table by default
             tabcontent[0].style.display = "block";
+            tabcontent[0].className += " active";
             tablinks[0].className += " active";
+            
             // Add event listener to ever button and set on click to activating that button and opening the tab while clsoing everything else
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].addEventListener("click", function () {

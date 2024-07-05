@@ -187,8 +187,7 @@ def saveDatabase(table=None, query=None):
     print("Finished loading into the Database.") 
     return False
        
-def deleteTable(name_this_delete):
-    tablename = name_this_delete.replace("this_delete", "")
+def deleteTable(tablename):
     connection = sqlite3.connect("test.db")
     cursor = connection.cursor()
     cursor.execute("DROP TABLE IF EXISTS " + tablename)
@@ -196,8 +195,54 @@ def deleteTable(name_this_delete):
     connection.commit()
     connection.close()
 
+def checkforNew(instance = "mastodon.social", tablename=None, last_id=None, to_time=None):
+    #Log into App
+    App = makeApp(instance)
+    #check if there are new ids between now and last recorded id
+    new_ids_online_dic =  App.search(tablename, min_id=last_id)
+    new_ids_online = new_ids_online_dic["statuses"]
+    if len(new_ids_online) > 1:
+        return new_ids_online
+    else:
+        return False
 
-def workDatabase(instance, table = "example", query = None, start_date = None, end_date = None, first = False):
+def updateTable(tablename, new_ids): #TODO
+#Access Database
+    connection = sqlite3.connect("test.db")
+    cursor = connection.cursor()
+# Define initial parameters
+    now = datetime.now()
+# Fetch statuses fitting the query page by page
+    while True:
+        for id in new_ids:
+            #turn content from html code to normal text
+            html = new_ids['content']
+            soup = BeautifulSoup(html, features="html.parser")
+            new_ids['content'] = soup.get_text()
+
+            #insert found posts into database
+            try:
+                cursor.execute("INSERT INTO " + tablename + " VALUES (:id, :created_at, :language, :uri, :url, :content)", (id))
+                connection.commit() 
+            except sqlite3.IntegrityError as err:
+                continue
+            except DeprecationWarning as deperr:
+                print("dumb warning")
+
+        # Check if there are more pages
+        if len(id) <= 1:
+            print("No more statuses found...saving to database.")
+            break  # No more pages
+
+        # Set max_id for the next page
+        #max_id = statuses[-1]['id']
+        min_id = id[0]['id']
+
+    return True
+    
+
+
+def workDatabase(instance, table = "qfever", query = None, start_date = None, end_date = None, first = False):
     #Log into App
     App = makeApp(instance)
 
@@ -277,9 +322,7 @@ def workDatabase(instance, table = "example", query = None, start_date = None, e
         now = datetime.now()
         current_time = now.strftime("%H:%M:%S")
         print("ST: " + start_time + ". Still fetching and waiting fo ratelimit to reset..." + current_time)
-    cursor.execute("SELECT * FROM " + table + " ORDER BY created_at")
-    cursor.execute("SELECT COUNT(*) FROM " + table)
-    count = cursor.fetchone()[0]
+    #cursor.execute("SELECT * FROM " + table + " ORDER BY created_at")
     connection.commit()
     connection.close()
     print("Finished loading into the Database.")

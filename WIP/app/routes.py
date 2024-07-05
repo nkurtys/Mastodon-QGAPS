@@ -9,24 +9,38 @@ from app import app
 @app.route('/home')
 def index():
     user = {'username': 'Natalie'}
-    #Access Database of fav tables
+    now = datetime.now()
+#Access Database of fav tables
     connection = sqlite3.connect("test.db")
     cursor = connection.cursor()
 
-    #Delete Datatable
-    delete = request.args.get("button-id", "")
-    if delete:
-        functions.deleteTable(delete)
+#Update datatable in active tab TODO
+    update_table = request.args.get("table-id", "")
+    if update_table:
+        last_id = cursor.execute('SELECT id FROM ' + update_table).fetchone()
+        new_ids = functions.checkforNew(update_table, start_date = last_id[0], end_date = str(now))
+        if (new_ids):
+            functions.updateTable(query = update_table, new_ids=new_ids)
 
+#Delete Datatable
+    to_delete_tablename = request.args.get("button-id", "")
+    if to_delete_tablename:
+        functions.deleteTable(to_delete_tablename)
 
+#Display all Datatables in tab
     names = cursor.execute("SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name").fetchall()
+    
     listOfTables = []
     for tablename in names:
+        #Disable deleting qfever database without admin rights
+        if tablename[0] == "qfever":
+            continue
         listOfLists = []
         listOfLists.append(tablename[0])
         listOfLists.append(cursor.execute("SELECT * FROM " + tablename[0]).fetchall())
         listOfTables.append(listOfLists)
     cursor.close()
+    connection.close()
     return render_template('index.html', title='Home', tablenames=names, 
                             listOfTables=listOfTables, user=user)
 
@@ -37,7 +51,7 @@ def database():
     #Access Database
     connection = sqlite3.connect("test.db")
     cursor = connection.cursor()
-    posts = cursor.execute('SELECT * FROM example').fetchall()
+    posts = cursor.execute('SELECT * FROM qfever').fetchall()
     cursor.close()
 
     return render_template('database.html', title='Database', posts=posts)
@@ -80,7 +94,7 @@ def admin():
         #Access Database for last entry date
         connection = sqlite3.connect("test.db")
         cursor = connection.cursor()
-        last_date = cursor.execute('SELECT created_at FROM example').fetchone()
+        last_date = cursor.execute('SELECT created_at FROM qfever').fetchone()
         cursor.close()
         print("Updating")
 
