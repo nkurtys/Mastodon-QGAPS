@@ -6,22 +6,24 @@ from app import app
 
 @app.route("/")
 
-@app.route('/home')
+@app.route('/home', methods=['GET', 'POST'])
 def index():
     user = {'username': 'Natalie'}
-    now = datetime.now()
+    #now = datetime.now()
 #Access Database of fav tables
-    connection = sqlite3.connect("test.db")
+    connection = sqlite3.connect("WIP/app/test.db")
     cursor = connection.cursor()
 
 #Update datatable in active tab TODO
-    update_table = request.args.get("table-id", "")
-    if update_table:
-        last_id = cursor.execute('SELECT id FROM ' + update_table).fetchone()
-        new_ids = functions.checkforNew(update_table, start_date = last_id[0], end_date = str(now))
-        if (new_ids):
-            functions.updateTable(query = update_table, new_ids=new_ids)
-
+    
+    update_table = request.args.get("update", "")
+    # print(update_table)
+    # if update_table:
+    #     last_id = cursor.execute('SELECT id FROM ' + update_table).fetchone()
+    #     print(update_table)
+    #     new_ids = functions.checkforNew(tablename=update_table, last_id = last_id[0])
+    #     if (new_ids):
+    #         functions.updateTable(tablename=update_table, last_id = last_id[0])
 #Delete Datatable
     to_delete_tablename = request.args.get("button-id", "")
     if to_delete_tablename:
@@ -49,7 +51,7 @@ def database():
 # TODO exchang example for qfever keyword
     #TODO make function call example for normal database even if user doesnt select a table name
     #Access Database
-    connection = sqlite3.connect("test.db")
+    connection = sqlite3.connect("WIP/app/test.db")
     cursor = connection.cursor()
     posts = cursor.execute('SELECT * FROM qfever').fetchall()
     cursor.close()
@@ -63,7 +65,6 @@ def search():
     start_date = request.args.get("start_date", "")
     end_date = request.args.get("end_date", "")
     tablename = request.args.get("tablename", "")
-    save = request.args.get("save", "")
     
     if query:
         #search toots for query and display it on the website
@@ -92,7 +93,7 @@ def admin():
         functions.workDatabase(instance="mastodon.social", query = "qfever", start_date = "2020-03-16", end_date = str(now), first = True)  
     elif update == "Updating... Don't cancel.":
         #Access Database for last entry date
-        connection = sqlite3.connect("test.db")
+        connection = sqlite3.connect("WIP/app/test.db")
         cursor = connection.cursor()
         last_date = cursor.execute('SELECT created_at FROM qfever').fetchone()
         cursor.close()
