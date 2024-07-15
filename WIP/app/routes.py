@@ -24,7 +24,6 @@ def index():
     #     new_ids = functions.checkforNew(tablename=update_table, last_id = last_id[0])
     #     if (new_ids):
     #         functions.updateTable(tablename=update_table, last_id = last_id[0])
-
 #Delete Datatable
     to_delete_tablename = request.args.get("button-id", "")
     if to_delete_tablename:

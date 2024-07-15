@@ -23,11 +23,9 @@
 <div class="tab">
     {%for tablename in listOfTables %}
     <div class="button-container">
-        <button class="tablinks" name="table-id" value="{{tablename[0]}}"
-        data-target="{{tablename[0]}}-tab">{{tablename[0]}}</button>
+        <button class="tablinks" name="table-id" value="{{tablename[0]}}" data-target="{{tablename[0]}}-tab">{{tablename[0]}}</button>
         <form action="" method="get">
-            <button type="submit" class="delete" name="button-id" value="{{tablename[0]}}"><i
-                    class="material-icons">delete</i></button>
+            <button type="submit" class="delete" name="button-id" value="{{tablename[0]}}"><i class="material-icons">delete</i></button>
         </form>
 
 
@@ -101,7 +99,6 @@
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
-
             this.className += " active";
             document.getElementById(this.getAttribute('data-target')).style.display = "block";
         })
