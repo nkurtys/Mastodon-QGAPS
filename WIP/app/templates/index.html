@@ -15,8 +15,7 @@
 
 </script>
 
-<h1>Homepage</h1>
-<br>
+<h1>Dashboard</h1>
 
 {% if tablenames != False%}
 
@@ -24,17 +23,27 @@
 <div class="tab">
     {%for tablename in listOfTables %}
     <div class="button-container">
-        <button class="tablinks" data-target="{{tablename[0]}}-tab">{{tablename[0]}}</button>
-        <form action="/home" method="get">
-            <button type="submit" class="delete" name="button-id" value="{{tablename[0]}}"><i class="material-icons">delete</i></button>
+        <button class="tablinks" name="table-id" value="{{tablename[0]}}"
+        data-target="{{tablename[0]}}-tab">{{tablename[0]}}</button>
+        <form action="" method="get">
+            <button type="submit" class="delete" name="button-id" value="{{tablename[0]}}"><i
+                    class="material-icons">delete</i></button>
         </form>
-        
+
+
     </div>
 
     {% endfor %}
+    <div class="button-container split">
+        <form action="/home" method="post">
+        <button type="submit" name="update" value= "influenza" class="tablinks">Update Tables</button>
+        <button class="update"><i class="material-icons">update</i></button>
+    </form>
+    </div>
+
 </div>
 
-    
+
 
 <!-- Tab content -->
 {%for tablename in listOfTables %}
@@ -43,6 +52,7 @@
     <table id="{{tablename[0]}}" class="display">
         <thead>
             <tr>
+                <!-- <th>ID</th> -->
                 <th>Content</th>
                 <!-- <th>ID</th> -->
                 <th>Timestamp</th>
@@ -54,6 +64,7 @@
         <tbody>
             <tr>
                 {% for post in tablename[1] %}
+                <!-- <td>{{ post[0] }}</td> -->
                 <td>{{ post[5] }}</td>
                 <td>{{ post[1] }}</td>
                 <td><a href="{{ post[4] }}">{{ post[4] }}</a></td>
@@ -67,32 +78,34 @@
 {% endfor %}
 
 <script>
-            // Script for Tab opening and closing
-            var i, tabcontent, tablinks;
-            tablinks = document.getElementsByClassName("tablinks");
-            tabcontent = document.getElementsByClassName("tabcontent");
-            // Default all Tabs are closed
+    // Script for Tab opening and closing
+    var i, tabcontent, tablinks;
+    tablinks = document.getElementsByClassName("tablinks");
+    tabcontent = document.getElementsByClassName("tabcontent");
+    // Default all Tabs are closed
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    // show first table by default
+    tabcontent[0].style.display = "block";
+    tabcontent[0].className += " active";
+    tablinks[0].className += " active";
+
+    // Add event listener to ever button and set on click to activating that button and opening the tab while clsoing everything else
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].addEventListener("click", function () {
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            for (j = 0; j < tablinks.length; j++) {
+                tablinks[j].className = tablinks[j].className.replace(" active", "");
+            }
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
             }
-            // show first table by default
-            tabcontent[0].style.display = "block";
-            tablinks[0].className += " active";
-            // Add event listener to ever button and set on click to activating that button and opening the tab while clsoing everything else
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].addEventListener("click", function () {
-                    // Show the current tab, and add an "active" class to the button that opened the tab
-                    for (j = 0; j < tablinks.length; j++) {
-                        tablinks[j].className = tablinks[j].className.replace(" active", "");
-                    }
-                    for (i = 0; i < tabcontent.length; i++) {
-                        tabcontent[i].style.display = "none";
-                    }
 
-                    this.className += " active";
-                    document.getElementById(this.getAttribute('data-target')).style.display = "block";
-                })
-            }
+            this.className += " active";
+            document.getElementById(this.getAttribute('data-target')).style.display = "block";
+        })
+    }
 </script>
 
 {% endif %}
@@ -121,9 +134,9 @@
 <!-- Initializing DataTable table -->
 {%for tablename in tablenames %}
 <script>
-            new DataTable('#{{tablename[0]}}', {
-                mark: true
-            });
+    new DataTable('#{{tablename[0]}}', {
+        mark: true
+    });
 </script>
 {% endfor %}
 {% endblock %}

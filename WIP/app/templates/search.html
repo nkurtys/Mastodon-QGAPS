@@ -18,7 +18,7 @@
 <h1>Search Mastodon</h1>
 
 <!-- TODO change that only mastodon.social - dropdown menue open for dding more instnaces -->
-<form action="" method="get" class="searchForm">
+<form action="/search" method="get" class="searchForm">
  <label> Mastodon Instance:</label> <input type="text" value="mastodon.social" name="instance">
   <label for="">Search query:</label> <input type="text" name="query">
   <label for="">Time from: </label><input type="date" name="start_date">
@@ -29,7 +29,7 @@
 <hr>
 
 <!-- Add Save button -->
-<form action="" method="get" class="saveForm">
+<form action="/search" method="get" class="saveForm">
   <input type="text" name="tablename">
   <input id="save" class="buttons" type="submit" value="Save Keyword to Dashbord">
  </form>
