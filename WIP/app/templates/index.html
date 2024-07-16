@@ -4,16 +4,6 @@
 
 {% block content %}
 
-<script>
-    var i, pagelinks, thispage, iconlinks;
-    pagelinks = document.getElementsByClassName("nav-item");
-    thispage = document.getElementById("home")
-    for (i = 0; i < pagelinks.length; i++) {
-        pagelinks[i].className = pagelinks[i].className.replace(" active", "");
-    };
-    thispage.className += " active";
-
-</script>
 
 <h1>Dashboard</h1>
 
@@ -40,8 +30,6 @@
     </div>
 
 </div>
-
-
 
 <!-- Tab content -->
 {%for tablename in listOfTables %}
@@ -75,6 +63,19 @@
 </div>
 {% endfor %}
 
+<!-- js script for navigation bar active button-->
+<script>
+    var i, pagelinks, thispage, iconlinks;
+    pagelinks = document.getElementsByClassName("nav-item");
+    thispage = document.getElementById("home")
+    for (i = 0; i < pagelinks.length; i++) {
+        pagelinks[i].className = pagelinks[i].className.replace(" active", "");
+    };
+    thispage.className += " active";
+
+</script>
+
+<!-- js Script for Tab opening and closing-->
 <script>
     // Script for Tab opening and closing
     var i, tabcontent, tablinks;
