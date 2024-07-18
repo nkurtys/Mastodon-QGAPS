@@ -5,64 +5,19 @@
 {% block content %}
 
 
-<h1>Dashboard</h1>
-
-{% if tablenames != False%}
-
-<!-- Tab links -->
-<div class="tab">
-    {%for tablename in listOfTables %}
-    <div class="button-container">
-        <button class="tablinks" name="table-id" value="{{tablename[0]}}" data-target="{{tablename[0]}}-tab">{{tablename[0]}}</button>
-        <form action="" method="get">
-            <button type="submit" class="delete" name="button-id" value="{{tablename[0]}}"><i class="material-icons">delete</i></button>
-        </form>
-
-
-    </div>
-
-    {% endfor %}
-    <div class="button-container split">
-        <form action="/home" method="post">
-        <button type="submit" name="update" value= "influenza" class="tablinks">Update Tables</button>
-        <button class="update"><i class="material-icons">update</i></button>
+<div class="menu-container">
+    <form id="grid" class="button-container">
+        
+        <button href="#/databse" class="button">Database</button>
+        <button href="#/search" class="button" style="overflow: auto;">Search Mastodon</button>
+        <button href="#/Action5" class="button">Contact</button>
+        <button href="#/admin" class="button">Admin Area</button>
+        <button href="#/Action4" class="button">LIVIVO</button>
+        <button href="#/Action5" class="button">CoxSpace</button>
+        <button href="#/Action5" class="button">tbd</button>
+        <button href="#/Action5" class="button">tbd</button>
     </form>
-    </div>
-
 </div>
-
-<!-- Tab content -->
-{%for tablename in listOfTables %}
-<div id="{{tablename[0]}}-tab" class="tabcontent">
-    <!-- <h1>'{{tablename[0]}}' Updates </h1> -->
-    <table id="{{tablename[0]}}" class="display">
-        <thead>
-            <tr>
-                <!-- <th>ID</th> -->
-                <th>Content</th>
-                <!-- <th>ID</th> -->
-                <th>Timestamp</th>
-                <!-- <th>URI</th> -->
-                <th>URL</th>
-                <th>Language</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                {% for post in tablename[1] %}
-                <!-- <td>{{ post[0] }}</td> -->
-                <td>{{ post[5] }}</td>
-                <td>{{ post[1] }}</td>
-                <td><a href="{{ post[4] }}">{{ post[4] }}</a></td>
-                <td>{{ post[2] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-</div>
-{% endfor %}
-
 <!-- js script for navigation bar active button-->
 <script>
     var i, pagelinks, thispage, iconlinks;
@@ -75,38 +30,7 @@
 
 </script>
 
-<!-- js Script for Tab opening and closing-->
-<script>
-    // Script for Tab opening and closing
-    var i, tabcontent, tablinks;
-    tablinks = document.getElementsByClassName("tablinks");
-    tabcontent = document.getElementsByClassName("tabcontent");
-    // Default all Tabs are closed
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    // show first table by default
-    tabcontent[0].style.display = "block";
-    tabcontent[0].className += " active";
-    tablinks[0].className += " active";
 
-    // Add event listener to ever button and set on click to activating that button and opening the tab while clsoing everything else
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].addEventListener("click", function () {
-            // Show the current tab, and add an "active" class to the button that opened the tab
-            for (j = 0; j < tablinks.length; j++) {
-                tablinks[j].className = tablinks[j].className.replace(" active", "");
-            }
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            this.className += " active";
-            document.getElementById(this.getAttribute('data-target')).style.display = "block";
-        })
-    }
-</script>
-
-{% endif %}
 <!-- Link to datatables css files -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
