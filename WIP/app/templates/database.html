@@ -6,9 +6,9 @@
 
 
 <h1>Database</h1>
-
+{% if tablenames != False%}
 <div class="table-tab">
-  {% if tablenames != False%}
+  
 
   <!-- Tab links -->
   <div class="tab">
@@ -38,7 +38,7 @@
   {%for tablename in listOfTables %}
   <div id="{{tablename[0]}}-tab" class="tabcontent">
     <!-- <h1>'{{tablename[0]}}' Updates </h1> -->
-    <table id="{{tablename[0]}}" class="display">
+    <table id="{{tablename[0]}}" class="display" style="width: 80%;">
       <thead>
         <tr>
           <!-- <th>ID</th> -->
@@ -65,9 +65,22 @@
 
   </div>
   {% endfor %}
+  
 </div>
-
 {% endif %}
+
+<!-- js Script for Navigation bar-->
+<script>
+  var i, pagelinks, thispage;
+  pagelinks = document.getElementsByClassName("nav-item");
+  thispage = document.getElementById("database")
+  for (i = 0; i < pagelinks.length; i++) {
+    pagelinks[i].className = pagelinks[i].className.replace(" active", "");
+  };
+  thispage.className += " active";
+
+</script>
+
 <!-- js Script for Tab opening and closing-->
 <script>
   // Script for Tab opening and closing
@@ -101,16 +114,7 @@
 
 
 
-<script>
-  var i, pagelinks, thispage;
-  pagelinks = document.getElementsByClassName("nav-item");
-  thispage = document.getElementById("database")
-  for (i = 0; i < pagelinks.length; i++) {
-    pagelinks[i].className = pagelinks[i].className.replace(" active", "");
-  };
-  thispage.className += " active";
 
-</script>
 <!-- Link to datatables css files -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
@@ -134,11 +138,11 @@
   href="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.min.css">
 
 <!-- Initializing DataTable table -->
+{%for tablename in tablenames %}
 <script>
-  new DataTable('#basetable', {
-    mark: true
-  });
+    new DataTable('#{{tablename[0]}}', {
+        mark: true
+    });
 </script>
-
-
+{% endfor %}
 {% endblock %}

@@ -34,20 +34,23 @@ def database():
 
 #Display all Datatables in tab
     names = cursor.execute("SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name").fetchall()
-    
     listOfTables = []
-    for tablename in names:
-        #Disable deleting qfever database without admin rights
-        # if tablename[0] == "qfever":
-        #     continue
-        listOfLists = []
-        listOfLists.append(tablename[0])
-        listOfLists.append(cursor.execute("SELECT * FROM " + tablename[0]).fetchall())
-        listOfTables.append(listOfLists)
-    cursor.close()
-    connection.close()
-    return render_template('database.html', title='Database',tablenames=names, 
+    if len(names) == 0 :
+        return render_template('database.html', title='Database',tablenames=False, 
                             listOfTables=listOfTables)
+    else:
+        for tablename in names:
+            #TODO Disable deleting qfever database without admin rights
+            # if tablename[0] == "qfever":
+            #     continue
+            listOfLists = []
+            listOfLists.append(tablename[0])
+            listOfLists.append(cursor.execute("SELECT * FROM " + tablename[0]).fetchall())
+            listOfTables.append(listOfLists)
+        cursor.close()
+        connection.close()
+        return render_template('database.html', title='Database',tablenames=names, 
+                                listOfTables=listOfTables)
 
 @app.route('/search')
 def search():
