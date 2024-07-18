@@ -30,35 +30,4 @@
 
 </script>
 
-
-<!-- Link to datatables css files -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.dataTables.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.5.2/css/dataTables.dateTime.min.css">
-
-<!-- Link to datatables.net files -->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
-<script type="text/javascript" charset="utf8"
-    src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
-<script type="text/javascript" charset="utf8"
-    src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.dataTables.js"></script>
-<script type="text/javascript" charset="utf8"
-    src="https://cdn.datatables.net/datetime/1.5.2/js/dataTables.dateTime.min.js"></script>
-
-<!-- Link to mark.js to highlight in table -->
-<script type="text/javascript" charset="utf8" src="https://cdn.jsdelivr.net/g/mark.js(jquery.mark.min.js)"></script>
-<script type="text/javascript" charset="utf8"
-    src="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/datatables.mark.js/2.0.0/datatables.mark.min.css">
-<link rel="stylesheet" type="text/css"
-    href="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.min.css">
-
-<!-- Initializing DataTable table -->
-{%for tablename in tablenames %}
-<script>
-    new DataTable('#{{tablename[0]}}', {
-        mark: true
-    });
-</script>
-{% endfor %}
 {% endblock %}
