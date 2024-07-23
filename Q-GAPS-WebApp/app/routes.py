@@ -9,14 +9,16 @@ from app import app
 @app.route('/home', methods=['GET', 'POST'])
 def index():
     user = {'username': 'Natalie'}
-    #now = datetime.now()
+    return render_template('index.html', title='Home', user=user)
+
+
+@app.route('/database') #collection
+def database():
 #Access Database of fav tables
     connection = sqlite3.connect("WIP/app/test.db")
     cursor = connection.cursor()
-
 #Update datatable in active tab TODO
-    
-    update_table = request.args.get("update", "")
+    # update_table = request.args.get("update", "")
     # print(update_table)
     # if update_table:
     #     last_id = cursor.execute('SELECT id FROM ' + update_table).fetchone()
@@ -24,39 +26,31 @@ def index():
     #     new_ids = functions.checkforNew(tablename=update_table, last_id = last_id[0])
     #     if (new_ids):
     #         functions.updateTable(tablename=update_table, last_id = last_id[0])
-#Delete Datatable
+
+    #Delete Datatable
     to_delete_tablename = request.args.get("button-id", "")
     if to_delete_tablename:
         functions.deleteTable(to_delete_tablename)
 
 #Display all Datatables in tab
     names = cursor.execute("SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name").fetchall()
-    
     listOfTables = []
-    for tablename in names:
-        #Disable deleting qfever database without admin rights
-        if tablename[0] == "qfever":
-            continue
-        listOfLists = []
-        listOfLists.append(tablename[0])
-        listOfLists.append(cursor.execute("SELECT * FROM " + tablename[0]).fetchall())
-        listOfTables.append(listOfLists)
-    cursor.close()
-    connection.close()
-    return render_template('index.html', title='Home', tablenames=names, 
-                            listOfTables=listOfTables, user=user)
-
-@app.route('/database')
-def database():
-# TODO exchang example for qfever keyword
-    #TODO make function call example for normal database even if user doesnt select a table name
-    #Access Database
-    connection = sqlite3.connect("WIP/app/test.db")
-    cursor = connection.cursor()
-    posts = cursor.execute('SELECT * FROM qfever').fetchall()
-    cursor.close()
-
-    return render_template('database.html', title='Database', posts=posts)
+    if len(names) == 0 :
+        return render_template('database.html', title='Database',tablenames=False, 
+                            listOfTables=listOfTables)
+    else:
+        for tablename in names:
+            #TODO Disable deleting qfever database without admin rights
+            # if tablename[0] == "qfever":
+            #     continue
+            listOfLists = []
+            listOfLists.append(tablename[0])
+            listOfLists.append(cursor.execute("SELECT * FROM " + tablename[0]).fetchall())
+            listOfTables.append(listOfLists)
+        cursor.close()
+        connection.close()
+        return render_template('database.html', title='Database',tablenames=names, 
+                                listOfTables=listOfTables)
 
 @app.route('/search')
 def search():
