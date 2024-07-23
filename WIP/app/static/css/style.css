@@ -22,14 +22,13 @@ nav {
 nav a {
   float: left;
   /* Float links side by side */
-  color: white;
+  color: #336B6B;
   /* White text color */
   text-align: center;
   /* Center-align text */
   /*width: 25%;  Equal width (5 icons with 20% width each = 100%) */
   padding: 14px 16px;
   /* Some top and bottom padding */
-  font-size: 36px;
   /* Increased font size */
   text-decoration: none;
   font-size: 20px;
@@ -62,9 +61,7 @@ a.link {
   color: #336B6B
 }
 
-a:visited {
-  color: #336B6B
-}
+
 
 table.display {
   align-self: center;
