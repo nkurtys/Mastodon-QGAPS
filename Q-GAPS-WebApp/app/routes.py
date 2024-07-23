@@ -15,7 +15,7 @@ def index():
 @app.route('/database') #collection
 def database():
 #Access Database of fav tables
-    connection = sqlite3.connect("WIP/app/test.db")
+    connection = sqlite3.connect("Q-GAPS-WebApp/app/test.db")
     cursor = connection.cursor()
 #Update datatable in active tab TODO
     # update_table = request.args.get("update", "")
@@ -87,7 +87,7 @@ def admin():
         functions.workDatabase(instance="mastodon.social", query = "qfever", start_date = "2020-03-16", end_date = str(now), first = True)  
     elif update == "Updating... Don't cancel.":
         #Access Database for last entry date
-        connection = sqlite3.connect("WIP/app/test.db")
+        connection = sqlite3.connect("Q-GAPS-WebApp/app/test.db")
         cursor = connection.cursor()
         last_date = cursor.execute('SELECT created_at FROM qfever').fetchone()
         cursor.close()

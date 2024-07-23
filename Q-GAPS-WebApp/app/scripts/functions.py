@@ -28,36 +28,36 @@ import sqlite3
 
 def makeApp(instance='mastodon.social', auth_code=False):
 #Initialize Application if no client_file given
-    if os.path.isfile('WIP/app/pytooter_clientcred.secret') == False:
+    if os.path.isfile('Q-GAPS-WebApp/app/pytooter_clientcred.secret') == False:
         print('Initializing App')
         Mastodon.create_app(
         "APP_NAME",
         api_base_url = instance,
-        to_file = 'WIP/app/pytooter_clientcred.secret'
+        to_file = 'Q-GAPS-WebApp/app/pytooter_clientcred.secret'
         )
         print("App created")
 
 #Start up App
     App = Mastodon(
-    client_id = 'WIP/app/pytooter_clientcred.secret',
+    client_id = 'Q-GAPS-WebApp/app/pytooter_clientcred.secret',
     api_base_url = instance
     )
 #Case 1 - no auth code given but file with access token availble - Log in via access token
-    if auth_code == False and os.path.isfile('WIP/app/pytooter_usercred.secret') == True:
+    if auth_code == False and os.path.isfile('Q-GAPS-WebApp/app/pytooter_usercred.secret') == True:
     #Acces Mastodon via acces token
-        App = Mastodon(access_token='WIP/app/pytooter_usercred.secret')
+        App = Mastodon(access_token='Q-GAPS-WebApp/app/pytooter_usercred.secret')
         print("logged in")        
         return App
 #Case 2 - auth code given - log in via access token and create/overwrite file
     if auth_code:
         App.log_in(
             code = auth_code,
-            to_file = 'WIP/app/pytooter_usercred.secret',
+            to_file = 'Q-GAPS-WebApp/app/pytooter_usercred.secret',
             scopes=['read', 'write', 'follow']
         )    
         return App
 #Case 3 - No authentication code and no file - Request authentication URL 
-    if auth_code == False and os.path.isfile('WIP/app/pytooter_usercred.secret') == False:
+    if auth_code == False and os.path.isfile('Q-GAPS-WebApp/app/pytooter_usercred.secret') == False:
         url = App.auth_request_url(scopes=['read', 'write', 'follow'])
         print(url)
         return False
@@ -122,7 +122,7 @@ def saveDatabase(table=None, query=None):
     App = makeApp("mastodon.social")
 
     #Access Database
-    connection = sqlite3.connect("WIP/app/test.db")
+    connection = sqlite3.connect("Q-GAPS-WebApp/app/test.db")
     cursor = connection.cursor()
     #cursor.execute("DROP TABLE IF EXISTS " + table)
     cursor.execute("CREATE TABLE IF NOT EXISTS " + table + " (id int NOT NULL UNIQUE, created_at, language, uri, url, content)")
@@ -188,7 +188,7 @@ def saveDatabase(table=None, query=None):
     return False
        
 def deleteTable(tablename):
-    connection = sqlite3.connect("WIP/app/test.db")
+    connection = sqlite3.connect("Q-GAPS-WebApp/app/test.db")
     cursor = connection.cursor()
     cursor.execute("DROP TABLE IF EXISTS " + tablename)
     print("Delted Table")
@@ -212,7 +212,7 @@ def updateTable(tablename, last_id): #TODO
 #Log into App
     App = makeApp("mastodon.social")
 #Access Database
-    connection = sqlite3.connect("WIP/app/test.db")
+    connection = sqlite3.connect("Q-GAPS-WebApp/app/test.db")
     cursor = connection.cursor()
 # Define initial parameters
     now = datetime.now()
@@ -256,7 +256,7 @@ def workDatabase(instance, table = "qfever", query = None, start_date = None, en
     App = makeApp(instance)
 
     #Access Database
-    connection = sqlite3.connect("WIP/app/test.db")
+    connection = sqlite3.connect("Q-GAPS-WebApp/app/test.db")
     cursor = connection.cursor()
     if first == True:
         cursor.execute("DROP TABLE IF EXISTS " + table)
