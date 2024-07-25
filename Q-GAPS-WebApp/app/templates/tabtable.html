@@ -1,13 +1,8 @@
 <!doctype html>
 
-{% extends "base.html" %}
 
-{% block content %}
-
-
-<h1>Database</h1>
 {% if tablenames != False%}
-<div class="table-tab" style="margin-left: 450px;">
+<div class="table-tab">
 
 
   <!-- Tab links -->
@@ -38,7 +33,7 @@
   {%for tablename in listOfTables %}
   <div id="{{tablename[0]}}-tab" class="tabcontent">
     <!-- <h1>'{{tablename[0]}}' Updates </h1> -->
-    <table id="{{tablename[0]}}" class="display" style="width: 80%;">
+    <table id="{{tablename[0]}}" class="display" style="width: 1000px; margin: 0px;">
       <thead>
         <tr>
           <!-- <th>ID</th> -->
@@ -130,17 +125,3 @@
 {% endfor %}
 
 {% endif %}
-
-<!-- js Script for Navigation bar-->
-<script>
-  var i, pagelinks, thispage;
-  pagelinks = document.getElementsByClassName("nav-item");
-  thispage = document.getElementById("database")
-  for (i = 0; i < pagelinks.length; i++) {
-    pagelinks[i].className = pagelinks[i].className.replace(" active", "");
-  };
-  thispage.className += " active";
-
-</script>
-
-{% endblock %}
