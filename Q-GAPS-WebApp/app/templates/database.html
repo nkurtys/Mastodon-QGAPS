@@ -124,7 +124,8 @@
 {%for tablename in tablenames %}
 <script>
   new DataTable('#{{tablename[0]}}', {
-    mark: true
+    mark: true,
+    order: [[1, 'desc']]
   });
 </script>
 {% endfor %}
