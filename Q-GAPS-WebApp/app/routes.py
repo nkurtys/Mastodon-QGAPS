@@ -1,17 +1,27 @@
 from datetime import datetime
-from flask import render_template, request
+from flask import render_template, request, redirect
 import sqlite3
 from app.scripts import functions
 from app import app
 
 @app.route("/")
 
+@app.route("/create")
+def create():
+    return redirect("/search")
+
+@app.route("/tables/<tablename>")
+def page(tablename):
+    print(tablename)
+    return render_template("page.html", table=tablename)
+
 @app.route('/home', methods=['GET', 'POST'])
 def index():
-    #Access Database of fav tables
+#Access Database of fav tables
     connection = sqlite3.connect("Q-GAPS-WebApp/app/test.db")
     cursor = connection.cursor()
-    #Delete Datatable
+
+#Delete Datatable
     to_delete_tablename = request.args.get("button-id", "")
     if to_delete_tablename:
         functions.deleteTable(to_delete_tablename)
