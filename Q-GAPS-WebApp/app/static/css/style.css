@@ -313,7 +313,7 @@ button:hover{
   padding: 50px;
   display: grid;
   grid-template-columns: 33% 33% 33%;
-  width: 70%;
+  width: 600px;
   height: 300px;
   grid-gap: 5px;
   float: revert;
@@ -333,10 +333,4 @@ button:hover{
   background-color: #336b6bc2;
   color: white;
   border-color: white;
-}
-
-.menu-container{
-  display: grid;
-  grid-template-columns: 40% 60%;
-  padding-top: 30px;
 }
