@@ -8,9 +8,33 @@ from app import app
 
 @app.route('/home', methods=['GET', 'POST'])
 def index():
-    user = {'username': 'Natalie'}
-    return render_template('index.html', title='Home', user=user)
+    #Access Database of fav tables
+    connection = sqlite3.connect("Q-GAPS-WebApp/app/test.db")
+    cursor = connection.cursor()
+    #Delete Datatable
+    to_delete_tablename = request.args.get("button-id", "")
+    if to_delete_tablename:
+        functions.deleteTable(to_delete_tablename)
 
+#Display all Datatables in tab
+    names = cursor.execute("SELECT name FROM sqlite_schema WHERE type='table' ORDER BY name").fetchall()
+    listOfTables = []
+    if len(names) == 0 :
+        return render_template('index.html', title='Home',tablenames=False, 
+                            listOfTables=listOfTables)
+    else:
+        for tablename in names:
+            #TODO Disable deleting qfever database without admin rights
+            # if tablename[0] == "qfever":
+            #     continue
+            listOfLists = []
+            listOfLists.append(tablename[0])
+            listOfLists.append(cursor.execute("SELECT * FROM " + tablename[0]).fetchall())
+            listOfTables.append(listOfLists)
+        cursor.close()
+        connection.close()
+        return render_template('index.html', title='Home',tablenames=names, 
+                                listOfTables=listOfTables)
 
 @app.route('/database') #collection
 def database():

@@ -36,7 +36,7 @@ nav a {
 }
 
 hr{
-  margin: 0;
+  margin: 5px;
 }
 
 nav h1 {
@@ -68,12 +68,9 @@ a.link {
 
 
 table.display {
-  align-self: center;
-  margin-left: auto;
-  margin-right: auto;
   border: solid 5px #DDEEEE;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 16px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
@@ -88,13 +85,10 @@ table.display thead th {
 
 table.display tbody td {
   border: solid 1px #DDEEEE;
-  text-align: justify;
-  color: #333;
-  padding: 10px;
-  text-shadow: 1px 1px 1px #fff;
+  
 
   max-width: 300px;
-  max-height: 100px;
+  
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -105,9 +99,6 @@ label {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-table.display.dataTable {
-  width: 100%;
-}
 
 div.dt-info {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -116,6 +107,10 @@ div.dt-info {
 div.dt-layout-row {
   width: 100%;
 }
+
+div#basetable_wrapper {
+  margin: 0 200px;
+  }
 
 
 form {
@@ -200,14 +195,15 @@ input[name="instance"] {
     inset -2px -2px 3px rgb(255 255 255 / 60%),
     inset 2px 2px 3px rgb(0 0 0 / 60%);
 }
+.table-tab{
+  margin: auto;
+}
 
 /* Style the tab */
 .tab {
-  
+  width: 1000px;
   overflow: hidden;
   border: 0 12px solid transparent;
-  padding-left: 12px;
-  padding-right: 12px;
   padding-top: 6px;
   padding-bottom: 6px;
 }
@@ -215,21 +211,24 @@ input[name="instance"] {
 /* Style the buttons that are used to open the tab content */
 button {
   float:left;
-  outline: none;
   cursor: pointer;
   transition: 0.3s;
 
-  border: 0;
+  border: 1px;
   line-height: 2.5;
   padding: 0 20px;
-  font-size: 1rem;
   text-align: center;
   color: #336B6B;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   border-radius: 10px;
+  border-color: #336B6B;
   background-color: white;
-  background-image: linear-gradient(to top left, rgb(0 0 0 / 20%), rgb(0 0 0 / 20%) 30%, rgb(0 0 0 / 0%));
   text-transform: uppercase;
+  background-image: linear-gradient(to top left,
+      rgb(0 0 0 / 20%),
+      rgb(0 0 0 / 20%) 30%,
+      rgb(0 0 0 / 0%));
+
 }
 
 .button-container {
@@ -305,22 +304,39 @@ button:hover{
 
 /* Style the tab content */
 .tabcontent {
-  
+  width: 1000px;
   display: none;
-  padding: 6px 12px;
-  border-top: none;
+  border-color: #336B6B;
 }
 
 #grid.button-container {
-  padding-top: 20px;
+  padding: 50px;
   display: grid;
-  grid-template-columns: 25% 25% 25% 25%;
-  margin-left: 10%;
-  width: 80%;
-  height: 500px;
+  grid-template-columns: 33% 33% 33%;
+  width: 70%;
+  height: 300px;
   grid-gap: 5px;
+  float: revert;
+  background-color: #336b6b;
+  border-radius: 10px;
+  margin-top: 50px;
 }
 
 #grid.button-container button {
   font-size: x-large;
+  background-image: none;
+  border: revert;
+  
+}
+
+#grid.button-container button:hover{
+  background-color: #336b6bc2;
+  color: white;
+  border-color: white;
+}
+
+.menu-container{
+  display: grid;
+  grid-template-columns: 40% 60%;
+  padding-top: 30px;
 }
