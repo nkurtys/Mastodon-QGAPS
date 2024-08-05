@@ -6,14 +6,15 @@
 
 
 <div class="menu-container">
-    <form id="grid" class="button-container">
-            
-        <button class="button"><a id="create" href="/create">Create</a></button>
-        {%for tablename in listOfTables %}
-                <button class="button"><a id="page" href="{{ url_for('page', tablename='{{ tablename[0] }}') }}"></a>{{ tablename[0] }}</button>
+    <dev id="grid" class="button-container">
+            <form action="/create"><button class="button"><a id="create" href="/create">Create</a></button></form>
+            {%for tablename in listOfTables %}
+            <form action="/tables/{{ tablename[0] }}">
+                <button class="button" type="submit" value="{{ tablename[0] }}">{{ tablename[0] }}</button>
+            </form>
+        
         {%endfor%}
-    </form>
-</div>
+    </dev>
 <!-- js script for navigation bar active button-->
 <script>
     var i, pagelinks, thispage, iconlinks;

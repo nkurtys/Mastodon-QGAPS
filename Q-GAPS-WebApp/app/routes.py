@@ -10,10 +10,19 @@ from app import app
 def create():
     return redirect("/search")
 
+@app.route("/tables/")
 @app.route("/tables/<tablename>")
-def page(tablename):
-    print(tablename)
-    return render_template("page.html", table=tablename)
+def re(tablename):
+    #Access Database of fav tables
+    connection = sqlite3.connect("Q-GAPS-WebApp/app/test.db")
+    cursor = connection.cursor()
+
+    #fetch all posts relating to tablename
+    posts = cursor.execute("SELECT * FROM " + tablename).fetchall()
+
+    cursor.close()
+    connection.close()
+    return render_template("page.html", tablename=tablename, posts=posts)
 
 @app.route('/home', methods=['GET', 'POST'])
 def index():
